@@ -24,3 +24,15 @@ def fetch_bars(symbol: str, start: str, end: str, timeframe: str = "1Day", clien
     # normalize returned frame to simple column names if needed
     bars.index = pd.to_datetime(bars.index)
     return bars
+
+
+def fetch_multiple_symbols(symbols, start, end, timeframe="1Day"):
+    """
+    Fetch bars for multiple symbols and return a dict of DataFrames keyed by symbol.
+    """
+    client = make_client()
+    data = {}
+    for sym in symbols:
+        df = fetch_bars(sym, start, end, timeframe, client=client)
+        data[sym] = df
+    return data
